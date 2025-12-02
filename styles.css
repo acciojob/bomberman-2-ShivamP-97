@@ -1,22 +1,24 @@
-.grid-container {
-    margin: 20px;
+#grid {
     display: grid;
-    grid-template-columns: auto auto auto;
-    padding: 10px;
+    grid-template-columns: repeat(10, 40px);
+    grid-template-rows: repeat(10, 40px);
+    gap: 2px;
+    width: fit-content;
+    margin: 20px auto;
 }
 
-.grid-item {
-    background-color: transparent;
-    border: 1px solid rgba(0, 0, 0, 0.8);
-    padding: 20px;
-    font-size: 30px;
+#grid div {
+    border: 1px solid #000;
     text-align: center;
+    line-height: 40px;
+    font-size: 20px;
+    user-select: none;
 }
 
-.flex-box {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 12px;
-    margin-top: 20px;
+.checked {
+    background: #ddd;
+}
+
+.flag {
+    background: yellow;
 }
