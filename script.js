@@ -31,36 +31,33 @@ document.addEventListener("DOMContentLoaded", () => {
                 toggleFlag(square);
             };
         }
+		for (let i = 0; i < 100; i++) {
 
-        for (let i = 0; i < squares.length; i++) {
+    if (squares[i].classList.contains("valid")) {
 
-            if (squares[i].classList.contains("valid")) {
-                let total = 0;
+        const isLeft = i % width === 0;
+        const isRight = i % width === width - 1;
+        const isTop = i < width;
+        const isBottom = i >= 100 - width;
 
-                const isLeft = (i % width === 0);
-                const isRight = (i % width === width - 1);
+        const neighbors = [];
 
-                
-                if (!isLeft && squares[i - 1]?.classList.contains("bomb")) total++;
-                
-                if (!isRight && squares[i + 1]?.classList.contains("bomb")) total++;
-                
-                if (squares[i - width]?.classList.contains("bomb")) total++;
-                
-                if (squares[i + width]?.classList.contains("bomb")) total++;
-                
-                if (!isLeft && squares[i - width - 1]?.classList.contains("bomb")) total++;
-                
-                if (!isRight && squares[i - width + 1]?.classList.contains("bomb")) total++;
-                
-                if (!isLeft && squares[i + width - 1]?.classList.contains("bomb")) total++;
-                
-                if (!isRight && squares[i + width + 1]?.classList.contains("bomb")) total++;
+        if (!isRight) neighbors.push(i + 1); 
+        if (!isLeft) neighbors.push(i - 1); 
+        if (!isTop) neighbors.push(i - width); 
+        if (!isBottom) neighbors.push(i + width); 
+        if (!isTop && !isLeft) neighbors.push(i - 1 - width);
+        if (!isTop && !isRight) neighbors.push(i + 1 - width);
+        if (!isBottom && !isLeft) neighbors.push(i - 1 + width);
+        if (!isBottom && !isRight) neighbors.push(i + 1 + width);
 
-                squares[i].setAttribute("data", total);
-            }
-        }
-    }
+        let count = neighbors.filter(idx => squares[idx]?.classList.contains("bomb")).length;
+
+        squares[i].setAttribute("data", count);
+	}
+		}
+
+	}
 
     createBoard();
 
@@ -108,22 +105,32 @@ document.addEventListener("DOMContentLoaded", () => {
         revealZeros(square);
     }
 
-    function revealZeros(square) {
-        const i = Number(square.id);
-        const isLeft = (i % width === 0);
-        const isRight = (i % width === width - 1);
+	function revealZeros(square) {
+    const i = Number(square.id);
 
-        setTimeout(() => {
-            if (!isLeft) click(squares[i - 1]);
-            if (!isRight) click(squares[i + 1]);
-            click(squares[i - width]);
-            click(squares[i + width]);
-            if (!isLeft) click(squares[i + width - 1]);
-            if (!isRight) click(squares[i + width + 1]);
-            if (!isLeft) click(squares[i - width - 1]);
-            if (!isRight) click(squares[i - width + 1]);
-        }, 10);
-    }
+    const isLeft = i % width === 0;
+    const isRight = i % width === width - 1;
+    const isTop = i < width;
+    const isBottom = i >= 100 - width;
+
+    const neighbors = [];
+
+    if (!isRight) neighbors.push(i + 1); 
+    if (!isLeft) neighbors.push(i - 1); 
+    if (!isTop) neighbors.push(i - width); 
+    if (!isBottom) neighbors.push(i + width); 
+    if (!isTop && !isLeft) neighbors.push(i - 1 - width);
+    if (!isTop && !isRight) neighbors.push(i + 1 - width);
+    if (!isBottom && !isLeft) neighbors.push(i - 1 + width);
+    if (!isBottom && !isRight) neighbors.push(i + 1 + width);
+
+    neighbors.forEach(idx => {
+        if (idx >= 0 && idx < 100) {
+            click(squares[idx]);
+        }
+    });
+}
+
 
     function gameOver() {
         isGameOver = true;
